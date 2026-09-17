@@ -1,11 +1,48 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
-import { Database, Key, MessageSquare, User, LogOut, Menu, X } from 'lucide-react';
+import { Link, usePage, router, useForm } from '@inertiajs/react';
+import { useState, useRef, useEffect } from 'react';
+import { Database, Key, MessageSquare, User, LogOut, Menu, X, ChevronDown, Check, Plus, Folder } from 'lucide-react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user;
+    const { user, current_project, projects } = usePage().props.auth;
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [projectDropdownOpen, setProjectDropdownOpen] = useState(false);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    
+    const { data, setData, post, processing, errors, reset } = useForm({
+        name: '',
+    });
+    
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setProjectDropdownOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [dropdownRef]);
+
+    const switchProject = (projectId) => {
+        router.post(route('projects.switch', projectId), {}, {
+            preserveScroll: true,
+            onSuccess: () => setProjectDropdownOpen(false)
+        });
+    };
+
+    const submitCreateProject = (e) => {
+        e.preventDefault();
+        post(route('projects.store'), {
+            preserveScroll: true,
+            onSuccess: () => {
+                setIsCreateModalOpen(false);
+                setProjectDropdownOpen(false);
+                reset('name');
+            }
+        });
+    };
 
     const NavItem = ({ href, active, icon: Icon, children }) => (
         <Link
@@ -36,10 +73,71 @@ export default function AuthenticatedLayout({ header, children }) {
             <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-white/40 dark:bg-slate-900/50 backdrop-blur-xl border-r border-gray-200/50 dark:border-slate-800 flex flex-col transform transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-auto ${
                 sidebarOpen ? 'translate-x-0' : '-translate-x-full'
             }`}>
-                <div className="h-20 flex items-center px-8 border-b border-gray-200/50 dark:border-slate-800">
+                <div className="h-20 flex items-center px-8 border-b border-gray-200/50 dark:border-slate-800 shrink-0">
                     <Link href="/">
                         <ApplicationLogo className="block h-10 w-auto" />
                     </Link>
+                </div>
+
+                {/* Workspace Switcher */}
+                <div className="px-4 py-4 border-b border-gray-200/50 dark:border-slate-800 shrink-0" ref={dropdownRef}>
+                    <div className="relative">
+                        <button 
+                            onClick={() => setProjectDropdownOpen(!projectDropdownOpen)}
+                            className="w-full flex items-center justify-between px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm hover:border-gray-300 dark:hover:border-slate-600 transition-colors"
+                        >
+                            <div className="flex items-center space-x-2 truncate">
+                                <div className="w-6 h-6 rounded bg-gray-100 dark:bg-slate-700 flex items-center justify-center shrink-0">
+                                    <Folder className="w-3.5 h-3.5 text-gray-600 dark:text-gray-300" />
+                                </div>
+                                <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 truncate">
+                                    {current_project ? current_project.name : 'Loading...'}
+                                </span>
+                            </div>
+                            <ChevronDown className="w-4 h-4 text-gray-500 shrink-0" />
+                        </button>
+
+                        {/* Dropdown Menu */}
+                        {projectDropdownOpen && (
+                            <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg py-1 z-50">
+                                <div className="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                    Your Workspaces
+                                </div>
+                                <div className="max-h-48 overflow-y-auto">
+                                    {projects?.map((project) => (
+                                        <button
+                                            key={project.id}
+                                            onClick={() => switchProject(project.id)}
+                                            className="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+                                        >
+                                            <div className="flex items-center space-x-2 truncate">
+                                                <div className="w-5 h-5 rounded bg-gray-100 dark:bg-slate-900 flex items-center justify-center shrink-0">
+                                                    {project.name.charAt(0).toUpperCase()}
+                                                </div>
+                                                <span className={`text-sm truncate ${current_project?.id === project.id ? 'font-medium text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-300'}`}>
+                                                    {project.name}
+                                                </span>
+                                            </div>
+                                            {current_project?.id === project.id && (
+                                                <Check className="w-4 h-4 text-[#F29191] shrink-0" />
+                                            )}
+                                        </button>
+                                    ))}
+                                </div>
+                                <div className="p-2 border-t border-gray-200 dark:border-slate-700">
+                                    <button
+                                        onClick={() => {
+                                            setIsCreateModalOpen(true);
+                                            setProjectDropdownOpen(false);
+                                        }}
+                                        className="w-full flex items-center px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md transition-colors"
+                                    >
+                                        <Plus className="w-4 h-4 mr-2" /> Create Workspace
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 <div className="flex-1 overflow-y-auto py-6 px-4">
@@ -117,6 +215,62 @@ export default function AuthenticatedLayout({ header, children }) {
                     {children}
                 </main>
             </div>
+
+            {/* Create Workspace Modal */}
+            {isCreateModalOpen && (
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+                    <div 
+                        className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm"
+                        onClick={() => setIsCreateModalOpen(false)}
+                    ></div>
+                    <div className="relative bg-white dark:bg-slate-900 rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-slate-800">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Create Workspace</h3>
+                            <button 
+                                onClick={() => setIsCreateModalOpen(false)}
+                                className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <form onSubmit={submitCreateProject} className="p-6">
+                            <div className="mb-6">
+                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Workspace Name
+                                </label>
+                                <input
+                                    id="name"
+                                    type="text"
+                                    value={data.name}
+                                    onChange={(e) => setData('name', e.target.value)}
+                                    placeholder="e.g. Acme Corp Docs"
+                                    className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#F29191] focus:border-[#F29191] dark:text-white transition-all shadow-sm"
+                                    autoFocus
+                                />
+                                {errors.name && (
+                                    <p className="mt-2 text-sm text-red-600">{errors.name}</p>
+                                )}
+                            </div>
+                            <div className="flex justify-end space-x-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsCreateModalOpen(false)}
+                                    className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={processing}
+                                    className="px-4 py-2 text-sm font-medium text-white bg-[#F29191] hover:bg-[#e68383] rounded-xl shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                                >
+                                    {processing ? 'Creating...' : 'Create Workspace'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

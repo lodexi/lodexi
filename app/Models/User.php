@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['name', 'email', 'password', 'llm_api_key', 'llm_provider'])]
+#[Fillable(['name', 'email', 'password', 'llm_api_key', 'llm_provider', 'current_project_id'])]
 #[Hidden(['password', 'remember_token', 'llm_api_key'])]
 class User extends Authenticatable
 {
@@ -29,5 +29,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
+
+    public function currentProject()
+    {
+        return $this->belongsTo(Project::class, 'current_project_id');
     }
 }

@@ -30,10 +30,15 @@ class LodexService
             'Accept' => 'application/json',
         ];
         
-        if ($user && $user->llm_api_key) {
-            $headers['X-Tenant-LLM-Key'] = $user->llm_api_key;
-            if ($user->llm_provider) {
-                $headers['X-Tenant-LLM-Provider'] = $user->llm_provider;
+        if ($user) {
+            if ($user->current_project_id) {
+                $headers['X-Project-ID'] = (string)$user->current_project_id;
+            }
+            if ($user->llm_api_key) {
+                $headers['X-Tenant-LLM-Key'] = $user->llm_api_key;
+                if ($user->llm_provider) {
+                    $headers['X-Tenant-LLM-Provider'] = $user->llm_provider;
+                }
             }
         }
         
@@ -67,10 +72,15 @@ class LodexService
             // Do not set Content-Type to application/json, let Laravel set it to multipart/form-data
         ];
         
-        if ($user && $user->llm_api_key) {
-            $headers['X-Tenant-LLM-Key'] = $user->llm_api_key;
-            if ($user->llm_provider) {
-                $headers['X-Tenant-LLM-Provider'] = $user->llm_provider;
+        if ($user) {
+            if ($user->current_project_id) {
+                $headers['X-Project-ID'] = (string)$user->current_project_id;
+            }
+            if ($user->llm_api_key) {
+                $headers['X-Tenant-LLM-Key'] = $user->llm_api_key;
+                if ($user->llm_provider) {
+                    $headers['X-Tenant-LLM-Provider'] = $user->llm_provider;
+                }
             }
         }
         

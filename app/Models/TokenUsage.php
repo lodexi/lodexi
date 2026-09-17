@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['user_id', 'prompt_tokens', 'completion_tokens', 'endpoint'])]
+#[Fillable(['project_id', 'prompt_tokens', 'completion_tokens', 'endpoint'])]
 class TokenUsage extends Model
 {
-    public function user(): BelongsTo
+    public function project(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Project::class);
     }
 }
