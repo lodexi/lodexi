@@ -17,7 +17,7 @@ class ApiKeyController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $token = $request->user()->createToken($request->name);
+        $token = $request->user()->currentProject->createToken($request->name);
 
         // Flash the plain text token to the session so it can be shown once.
         return Redirect::route('dashboard.apikeys')->with('new_token', $token->plainTextToken);
@@ -28,7 +28,7 @@ class ApiKeyController extends Controller
      */
     public function destroy(Request $request, string $id): RedirectResponse
     {
-        $request->user()->tokens()->where('id', $id)->delete();
+        $request->user()->currentProject->tokens()->where('id', $id)->delete();
 
         return Redirect::route('dashboard.apikeys');
     }

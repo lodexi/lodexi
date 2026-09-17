@@ -10,15 +10,15 @@ class Document extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'project_id',
         'filename',
         'size',
         'status',
         'external_id',
     ];
 
-    public function user()
+    public function project()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Project::class);
     }
 }
