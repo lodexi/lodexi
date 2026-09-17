@@ -25,18 +25,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/portal/ingest', [LodexPortalController::class, 'ingest'])->name('portal.ingest');
     Route::delete('/portal/documents/{id}', [LodexPortalController::class, 'destroy'])->name('portal.documents.destroy');
     Route::get('/dashboard', function () {
-        $documents = \App\Models\Document::where('user_id', auth()->id())->latest()->get();
+        $documents = \App\Models\Document::where('project_id', auth()->user()->current_project_id)->latest()->get();
         return Inertia::render('Dashboard/Knowledge', [
             'documents' => $documents
         ]);
     })->name('dashboard');
 
     Route::get('/dashboard/apikeys', function () {
-        $userId = auth()->id();
+        $projectId = auth()->user()->current_project_id;
         $analytics = [
-            'total_requests' => TokenUsage::where('user_id', $userId)->count(),
-            'prompt_tokens' => TokenUsage::where('user_id', $userId)->sum('prompt_tokens'),
-            'completion_tokens' => TokenUsage::where('user_id', $userId)->sum('completion_tokens'),
+            'total_requests' => TokenUsage::where('project_id', $projectId)->count(),
+            'prompt_tokens' => TokenUsage::where('project_id', $projectId)->sum('prompt_tokens'),
+            'completion_tokens' => TokenUsage::where('project_id', $projectId)->sum('completion_tokens'),
         ];
         
         $tokens = auth()->user()->tokens()->orderBy('created_at', 'desc')->get()->map(function ($token) {
