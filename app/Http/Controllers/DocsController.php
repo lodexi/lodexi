@@ -50,11 +50,21 @@ class DocsController extends Controller
 
         // 6. Hardcode sidebar navigation structure for MVP
         $navigation = [
-            'Getting Started' => [
+            'Introduction' => [
                 'README' => 'Overview',
+                'quickstart' => 'Quickstart',
             ],
-            'Architecture' => [
-                'ARCHITECTURE' => 'System Design',
+            'Authentication' => [
+                'auth/api-keys' => 'API Keys',
+                'auth/oauth' => 'OAuth 2.0',
+            ],
+            'API Reference' => [
+                'api/endpoints' => 'Endpoints',
+                'api/models' => 'Models',
+            ],
+            'Integrations' => [
+                'integrations/google-chat' => 'Google Chat',
+                'integrations/slack' => 'Slack',
             ],
         ];
 

@@ -65,7 +65,7 @@ export default function DocsIndex({ content, navigation, currentPage }) {
                 
                 {/* Left Sidebar (Navigation) */}
                 <aside className={`
-                    fixed inset-y-0 left-0 z-40 w-72 bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 pt-20 pb-10 overflow-y-auto transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:block md:w-64 lg:w-72 md:pt-8 shrink-0
+                    fixed inset-y-0 left-0 z-40 w-72 bg-white/80 dark:bg-slate-900/50 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-700/50 pt-20 pb-10 overflow-y-auto transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:block md:w-64 lg:w-72 md:pt-8 shrink-0
                     ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
                 `}>
                     <nav className="px-4 md:px-6">
@@ -74,17 +74,17 @@ export default function DocsIndex({ content, navigation, currentPage }) {
                                 <h5 className="mb-3 font-semibold text-slate-900 dark:text-gray-200 uppercase tracking-wider text-xs">
                                     {category}
                                 </h5>
-                                <ul className="space-y-2 border-l border-slate-200 dark:border-slate-800 ml-2">
+                                <ul className="space-y-2 border-l border-slate-200/60 dark:border-slate-700/60 ml-2">
                                     {Object.entries(links).map(([slug, title]) => {
                                         const isActive = currentPage === slug;
                                         return (
                                             <li key={slug}>
                                                 <Link
                                                     href={route('docs', { page: slug })}
-                                                    className={`block pl-4 -ml-[1px] border-l text-sm transition-colors ${
+                                                    className={`block pl-4 -ml-[1px] border-l text-sm transition-all duration-300 ${
                                                         isActive 
-                                                        ? 'border-[#F29191] text-[#F29191] font-medium' 
-                                                        : 'border-transparent text-slate-600 dark:text-slate-400 hover:border-slate-400 hover:text-slate-900 dark:hover:text-gray-300'
+                                                        ? 'border-[#F29191] text-[#F29191] font-medium drop-shadow-[0_0_8px_rgba(242,145,145,0.6)]' 
+                                                        : 'border-transparent text-slate-600 dark:text-slate-400 hover:border-[#F29191]/50 hover:text-[#F29191] hover:drop-shadow-[0_0_5px_rgba(242,145,145,0.4)]'
                                                     }`}
                                                 >
                                                     {title}
