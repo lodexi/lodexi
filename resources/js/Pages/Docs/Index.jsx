@@ -65,7 +65,7 @@ export default function DocsIndex({ content, navigation, currentPage }) {
                 
                 {/* Left Sidebar (Navigation) */}
                 <aside className={`
-                    fixed inset-y-0 left-0 z-40 w-72 bg-white/80 dark:bg-slate-900/50 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-700/50 pt-20 pb-10 overflow-y-auto transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:block md:w-64 lg:w-72 md:pt-8 shrink-0
+                    fixed inset-y-0 left-0 z-40 w-72 bg-white/80 dark:bg-slate-900/50 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-700/50 pt-20 pb-10 overflow-y-auto transition-transform duration-300 ease-in-out md:translate-x-0 md:sticky md:top-16 md:h-[calc(100vh-4rem)] md:block md:w-64 lg:w-72 md:pt-8 shrink-0
                     ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
                 `}>
                     <nav className="px-4 md:px-6">
