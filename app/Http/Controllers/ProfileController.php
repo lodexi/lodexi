@@ -57,6 +57,24 @@ class ProfileController extends Controller
     }
 
     /**
+     * Update the active project's AI persona (system prompt).
+     */
+    public function updatePersona(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'system_prompt' => ['nullable', 'string', 'max:5000'],
+        ]);
+
+        $project = $request->user()->currentProject;
+        
+        if ($project) {
+            $project->update($validated);
+        }
+
+        return Redirect::route('profile.edit')->with('success', 'AI Persona updated successfully.');
+    }
+
+    /**
      * Delete the user's account.
      */
     public function destroy(Request $request): RedirectResponse
