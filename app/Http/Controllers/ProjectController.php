@@ -23,7 +23,7 @@ class ProjectController extends Controller
             'current_project_id' => $project->id,
         ]);
 
-        return Redirect::back()->with('success', 'Workspace switched to ' . $project->name);
+        return Redirect::back()->with('success', 'AI Project switched to ' . $project->name);
     }
 
     /**
@@ -45,6 +45,6 @@ class ProjectController extends Controller
             'current_project_id' => $project->id,
         ]);
 
-        return Redirect::back()->with('success', 'Workspace "' . $project->name . '" created successfully.');
+        return Redirect::back()->with('success', 'AI Project "' . $project->name . '" created successfully.');
     }
 }

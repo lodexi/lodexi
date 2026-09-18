@@ -101,7 +101,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         {projectDropdownOpen && (
                             <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg py-1 z-50">
                                 <div className="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                    Your Workspaces
+                                    Your AI Projects
                                 </div>
                                 <div className="max-h-48 overflow-y-auto">
                                     {projects?.map((project) => (
@@ -132,7 +132,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                         }}
                                         className="w-full flex items-center px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md transition-colors"
                                     >
-                                        <Plus className="w-4 h-4 mr-2" /> Create Workspace
+                                        <Plus className="w-4 h-4 mr-2" /> Create AI Project
                                     </button>
                                 </div>
                             </div>
@@ -216,7 +216,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 </main>
             </div>
 
-            {/* Create Workspace Modal */}
+            {/* Create AI Project Modal */}
             {isCreateModalOpen && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
                     <div 
@@ -225,7 +225,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     ></div>
                     <div className="relative bg-white dark:bg-slate-900 rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200">
                         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-slate-800">
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Create Workspace</h3>
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Create AI Project</h3>
                             <button 
                                 onClick={() => setIsCreateModalOpen(false)}
                                 className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors"
@@ -236,7 +236,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         <form onSubmit={submitCreateProject} className="p-6">
                             <div className="mb-6">
                                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Workspace Name
+                                    AI Project Name
                                 </label>
                                 <input
                                     id="name"
@@ -264,7 +264,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     disabled={processing}
                                     className="px-4 py-2 text-sm font-medium text-white bg-[#F29191] hover:bg-[#e68383] rounded-xl shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                                 >
-                                    {processing ? 'Creating...' : 'Create Workspace'}
+                                    {processing ? 'Creating...' : 'Create AI Project'}
                                 </button>
                             </div>
                         </form>
