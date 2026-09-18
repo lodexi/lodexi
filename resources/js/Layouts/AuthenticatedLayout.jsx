@@ -1,7 +1,7 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link, usePage, router, useForm } from '@inertiajs/react';
 import { useState, useRef, useEffect } from 'react';
-import { Database, Key, MessageSquare, User, LogOut, Menu, X, ChevronDown, Check, Plus, Folder } from 'lucide-react';
+import { Database, Key, MessageSquare, User, LogOut, Menu, X, ChevronDown, Check, Plus, Folder, Blocks } from 'lucide-react';
 
 export default function AuthenticatedLayout({ header, children }) {
     const { user, current_project, projects } = usePage().props.auth;
@@ -150,6 +150,9 @@ export default function AuthenticatedLayout({ header, children }) {
                         </NavItem>
                         <NavItem href={route('dashboard.playground')} active={route().current('dashboard.playground')} icon={MessageSquare}>
                             AI Playground
+                        </NavItem>
+                        <NavItem href={route('dashboard.integrations')} active={route().current('dashboard.integrations')} icon={Blocks}>
+                            Integrations
                         </NavItem>
                     </nav>
                 </div>

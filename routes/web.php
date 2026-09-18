@@ -66,6 +66,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/playground', function () {
         return Inertia::render('Dashboard/Playground');
     })->name('dashboard.playground');
+
+    Route::get('/dashboard/integrations', function () {
+        return Inertia::render('Dashboard/Integrations');
+    })->name('dashboard.integrations');
 });
 
 Route::middleware('auth')->group(function () {
