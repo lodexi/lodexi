@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LodexPortalController;
+use App\Http\Controllers\Webhook\GoogleChatController;
+
+Route::post('/webhooks/google-chat/{tenant_id}', [GoogleChatController::class, 'handle'])->name('webhooks.google-chat');
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
