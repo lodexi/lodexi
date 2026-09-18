@@ -118,11 +118,17 @@ class LodexService
      */
     public function ask(string $question, int $limit = 4, ?string $category = null, ?User $user = null): array
     {
-        $response = $this->client($user)->post("{$this->baseUrl}/v1/ask", [
+        $payload = [
             'question' => $question,
             'limit' => $limit,
             'category_filter' => $category,
-        ]);
+        ];
+
+        if ($user && $user->currentProject && $user->currentProject->system_prompt) {
+            $payload['system_prompt'] = $user->currentProject->system_prompt;
+        }
+
+        $response = $this->client($user)->post("{$this->baseUrl}/v1/ask", $payload);
 
         return $response->json();
     }

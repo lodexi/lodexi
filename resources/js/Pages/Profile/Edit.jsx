@@ -3,6 +3,7 @@ import { Head } from '@inertiajs/react';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import UpdateAiPersonaForm from './Partials/UpdateAiPersonaForm';
 import { useState, useEffect } from 'react';
 
 export default function Edit({ mustVerifyEmail, status }) {
@@ -129,20 +130,9 @@ export default function Edit({ mustVerifyEmail, status }) {
                                 </section>
                             </div>
 
-                            {/* AI Persona Placeholder */}
+                            {/* AI Persona */}
                             <div id="persona" className="scroll-mt-24 bg-white/80 dark:bg-slate-900/50 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/50 shadow-sm sm:rounded-2xl p-6 sm:p-8 transition-all hover:shadow-md">
-                                <section>
-                                    <header>
-                                        <h2 className="text-lg font-medium text-slate-900 dark:text-gray-100">AI Persona</h2>
-                                        <p className="mt-1 text-sm text-slate-600 dark:text-gray-400">Customize the behavior, tone, and personality of your AI assistant.</p>
-                                    </header>
-                                    <div className="mt-8 flex flex-col items-center justify-center h-40 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30">
-                                        <svg className="w-8 h-8 text-slate-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                        <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Coming Soon</p>
-                                    </div>
-                                </section>
+                                <UpdateAiPersonaForm className="max-w-2xl" />
                             </div>
 
                             {/* Danger Zone */}
