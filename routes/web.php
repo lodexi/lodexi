@@ -29,12 +29,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/projects/{project}/switch', [ProjectController::class, 'switch'])->name('projects.switch');
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
 
-    Route::get('/dashboard', function () {
+    Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'home'])->name('dashboard');
+
+    Route::get('/dashboard/knowledge', function () {
         $documents = \App\Models\Document::where('project_id', auth()->user()->current_project_id)->latest()->get();
         return Inertia::render('Dashboard/Knowledge', [
             'documents' => $documents
         ]);
-    })->name('dashboard');
+    })->name('dashboard.knowledge');
 
     Route::get('/dashboard/apikeys', function () {
         $projectId = auth()->user()->current_project_id;

@@ -1,7 +1,7 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link, usePage, router, useForm } from '@inertiajs/react';
 import { useState, useRef, useEffect } from 'react';
-import { Database, Key, MessageSquare, User, LogOut, Menu, X, ChevronDown, Check, Plus, Folder, Blocks } from 'lucide-react';
+import { Database, Key, MessageSquare, User, LogOut, Menu, X, ChevronDown, Check, Plus, Folder, Blocks, Home } from 'lucide-react';
 
 export default function AuthenticatedLayout({ header, children }) {
     const { user, current_project, projects } = usePage().props.auth;
@@ -142,7 +142,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
                 <div className="flex-1 overflow-y-auto py-6 px-4">
                     <nav className="space-y-1">
-                        <NavItem href={route('dashboard')} active={route().current('dashboard')} icon={Database}>
+                        <NavItem href={route('dashboard')} active={route().current('dashboard')} icon={Home}>
+                            Home
+                        </NavItem>
+                        <NavItem href={route('dashboard.knowledge')} active={route().current('dashboard.knowledge')} icon={Database}>
                             Knowledge Base
                         </NavItem>
                         <NavItem href={route('dashboard.apikeys')} active={route().current('dashboard.apikeys')} icon={Key}>
