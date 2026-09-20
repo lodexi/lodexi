@@ -6,18 +6,18 @@ import { Transition } from '@headlessui/react';
 import { useForm, usePage } from '@inertiajs/react';
 
 export default function UpdateLlmSettingsForm({ className = '' }) {
-    const user = usePage().props.auth.user;
+    const { current_project } = usePage().props.auth;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
-            llm_api_key: user.llm_api_key || '',
-            llm_provider: user.llm_provider || 'gemini',
+            llm_api_key: current_project?.llm_api_key || '',
+            llm_provider: current_project?.llm_provider || 'gemini',
         });
 
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update_llm'));
+        patch(route('dashboard.ai-settings.update_llm'));
     };
 
     return (

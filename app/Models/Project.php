@@ -16,6 +16,12 @@ class Project extends Model
         'system_prompt',
         'chat_integration_type',
         'chat_integration_webhook',
+        'llm_provider',
+        'llm_api_key',
+    ];
+
+    protected $hidden = [
+        'llm_api_key',
     ];
 
     public function user()

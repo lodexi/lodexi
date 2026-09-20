@@ -14,7 +14,7 @@ export default function UpdateAiPersonaForm({ className = '' }) {
 
     const submit = (e) => {
         e.preventDefault();
-        patch(route('profile.update_persona'), {
+        patch(route('dashboard.ai-settings.update_persona'), {
             preserveScroll: true,
         });
     };
