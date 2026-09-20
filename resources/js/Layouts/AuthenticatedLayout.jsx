@@ -148,9 +148,6 @@ export default function AuthenticatedLayout({ header, children }) {
                         <NavItem href={route('dashboard.knowledge')} active={route().current('dashboard.knowledge')} icon={Database}>
                             Knowledge Base
                         </NavItem>
-                        <NavItem href={route('dashboard.apikeys')} active={route().current('dashboard.apikeys')} icon={Key}>
-                            API Keys
-                        </NavItem>
                         <NavItem href={route('dashboard.playground')} active={route().current('dashboard.playground')} icon={MessageSquare}>
                             AI Playground
                         </NavItem>
