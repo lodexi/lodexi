@@ -41,40 +41,6 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's LLM AI settings.
-     */
-    public function updateLlmSettings(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'llm_provider' => ['required', 'string', 'in:gemini,openai'],
-            'llm_api_key' => ['nullable', 'string', 'max:255'],
-        ]);
-
-        $request->user()->fill($validated);
-        $request->user()->save();
-
-        return Redirect::route('profile.edit');
-    }
-
-    /**
-     * Update the active project's AI persona (system prompt).
-     */
-    public function updatePersona(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'system_prompt' => ['nullable', 'string', 'max:5000'],
-        ]);
-
-        $project = $request->user()->currentProject;
-        
-        if ($project) {
-            $project->update($validated);
-        }
-
-        return Redirect::route('profile.edit')->with('success', 'AI Persona updated successfully.');
-    }
-
-    /**
      * Delete the user's account.
      */
     public function destroy(Request $request): RedirectResponse

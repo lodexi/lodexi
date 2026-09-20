@@ -48,13 +48,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard.playground');
 
     Route::get('/dashboard/integrations', [\App\Http\Controllers\DashboardController::class, 'integrations'])->name('dashboard.integrations');
+
+    Route::get('/dashboard/ai-settings', [\App\Http\Controllers\AiSettingsController::class, 'edit'])->name('dashboard.ai-settings');
+    Route::put('/dashboard/ai-settings/llm', [\App\Http\Controllers\AiSettingsController::class, 'updateLlm'])->name('dashboard.ai-settings.update_llm');
+    Route::put('/dashboard/ai-settings/persona', [\App\Http\Controllers\AiSettingsController::class, 'updatePersona'])->name('dashboard.ai-settings.update_persona');
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::patch('/profile/llm', [ProfileController::class, 'updateLlmSettings'])->name('profile.update_llm');
-    Route::patch('/profile/persona', [ProfileController::class, 'updatePersona'])->name('profile.update_persona');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

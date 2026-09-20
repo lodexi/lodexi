@@ -2,7 +2,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import { Key, Copy, PlusCircle, CheckCircle2, Shield, Clock, AlertCircle, Webhook, BrainCircuit, MessageSquareText, Trash2, X, MessageSquare, Blocks } from 'lucide-react';
-import UpdateLlmSettingsForm from '../Profile/Partials/UpdateLlmSettingsForm';
 import ApiQuickStart from './Partials/ApiQuickStart';
 import Modal from '@/Components/Modal';
 import InputError from '@/Components/InputError';
@@ -249,10 +248,6 @@ export default function Integrations({ analytics, tokens, new_token, active_tab 
                                 </div>
                             </div>
 
-                            {/* LLM API Settings (BYOK) */}
-                            <div className="bg-white/40 dark:bg-slate-900/50 backdrop-blur-xl p-4 shadow-sm sm:rounded-2xl sm:p-8 border border-gray-200/50 dark:border-slate-800">
-                                <UpdateLlmSettingsForm className="max-w-xl" />
-                            </div>
 
                             {/* Developer Quick Start */}
                             <div className="bg-white/40 dark:bg-slate-900/50 backdrop-blur-xl p-4 shadow-sm sm:rounded-2xl sm:p-8 border border-gray-200/50 dark:border-slate-800">

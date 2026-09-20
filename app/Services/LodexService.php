@@ -34,10 +34,10 @@ class LodexService
             if ($user->current_project_id) {
                 $headers['X-Project-ID'] = (string)$user->current_project_id;
             }
-            if ($user->llm_api_key) {
-                $headers['X-Tenant-LLM-Key'] = $user->llm_api_key;
-                if ($user->llm_provider) {
-                    $headers['X-Tenant-LLM-Provider'] = $user->llm_provider;
+            if ($user->currentProject && $user->currentProject->llm_api_key) {
+                $headers['X-Tenant-LLM-Key'] = $user->currentProject->llm_api_key;
+                if ($user->currentProject->llm_provider) {
+                    $headers['X-Tenant-LLM-Provider'] = $user->currentProject->llm_provider;
                 }
             }
         }
@@ -76,10 +76,10 @@ class LodexService
             if ($user->current_project_id) {
                 $headers['X-Project-ID'] = (string)$user->current_project_id;
             }
-            if ($user->llm_api_key) {
-                $headers['X-Tenant-LLM-Key'] = $user->llm_api_key;
-                if ($user->llm_provider) {
-                    $headers['X-Tenant-LLM-Provider'] = $user->llm_provider;
+            if ($user->currentProject && $user->currentProject->llm_api_key) {
+                $headers['X-Tenant-LLM-Key'] = $user->currentProject->llm_api_key;
+                if ($user->currentProject->llm_provider) {
+                    $headers['X-Tenant-LLM-Provider'] = $user->currentProject->llm_provider;
                 }
             }
         }
