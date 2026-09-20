@@ -38,29 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ]);
     })->name('dashboard.knowledge');
 
-    Route::get('/dashboard/apikeys', function () {
-        $projectId = auth()->user()->current_project_id;
-        $analytics = [
-            'total_requests' => TokenUsage::where('project_id', $projectId)->count(),
-            'prompt_tokens' => TokenUsage::where('project_id', $projectId)->sum('prompt_tokens'),
-            'completion_tokens' => TokenUsage::where('project_id', $projectId)->sum('completion_tokens'),
-        ];
-        
-        $tokens = auth()->user()->currentProject->tokens()->orderBy('created_at', 'desc')->get()->map(function ($token) {
-            return [
-                'id' => $token->id,
-                'name' => $token->name,
-                'last_used_at' => $token->last_used_at ? $token->last_used_at->diffForHumans() : 'Never',
-                'created_at' => $token->created_at->format('M j, Y'),
-            ];
-        });
 
-        return Inertia::render('Dashboard/ApiKeys', [
-            'analytics' => $analytics,
-            'tokens' => $tokens,
-            'new_token' => session('new_token'),
-        ]);
-    })->name('dashboard.apikeys');
 
     Route::post('/dashboard/apikeys', [ApiKeyController::class, 'store'])->name('dashboard.apikeys.store');
     Route::delete('/dashboard/apikeys/{id}', [ApiKeyController::class, 'destroy'])->name('dashboard.apikeys.destroy');
@@ -69,9 +47,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Dashboard/Playground');
     })->name('dashboard.playground');
 
-    Route::get('/dashboard/integrations', function () {
-        return Inertia::render('Dashboard/Integrations');
-    })->name('dashboard.integrations');
+    Route::get('/dashboard/integrations', [\App\Http\Controllers\DashboardController::class, 'integrations'])->name('dashboard.integrations');
 });
 
 Route::middleware('auth')->group(function () {

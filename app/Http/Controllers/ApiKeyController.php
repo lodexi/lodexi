@@ -20,7 +20,7 @@ class ApiKeyController extends Controller
         $token = $request->user()->currentProject->createToken($request->name);
 
         // Flash the plain text token to the session so it can be shown once.
-        return Redirect::route('dashboard.apikeys')->with('new_token', $token->plainTextToken);
+        return Redirect::route('dashboard.integrations', ['tab' => 'api-keys'])->with('new_token', $token->plainTextToken);
     }
 
     /**
@@ -30,6 +30,6 @@ class ApiKeyController extends Controller
     {
         $request->user()->currentProject->tokens()->where('id', $id)->delete();
 
-        return Redirect::route('dashboard.apikeys');
+        return Redirect::route('dashboard.integrations', ['tab' => 'api-keys']);
     }
 }
