@@ -44,7 +44,7 @@ class LodexPortalController extends Controller
      */
     public function ask(Request $request)
     {
-        $request->validate(['question' => 'required|string|min:3']);
+        $request->validate(['question' => 'required|string|min:1']);
         $answer = $this->lodex->ask(
             $request->input('question'),
             $request->input('limit', 4),
