@@ -42,7 +42,7 @@ class LodexService
             }
         }
         
-        return Http::withHeaders($headers)->timeout(15);
+        return Http::withHeaders($headers)->timeout(60);
     }
 
     /**
