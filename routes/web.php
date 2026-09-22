@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LodexPortalController;
 use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectSettingsController;
 use App\Models\TokenUsage;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -47,11 +48,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Dashboard/Playground');
     })->name('dashboard.playground');
 
-    Route::get('/dashboard/integrations', [\App\Http\Controllers\DashboardController::class, 'integrations'])->name('dashboard.integrations');
-
-    Route::get('/dashboard/ai-settings', [\App\Http\Controllers\AiSettingsController::class, 'edit'])->name('dashboard.ai-settings');
-    Route::put('/dashboard/ai-settings/llm', [\App\Http\Controllers\AiSettingsController::class, 'updateLlm'])->name('dashboard.ai-settings.update_llm');
-    Route::put('/dashboard/ai-settings/persona', [\App\Http\Controllers\AiSettingsController::class, 'updatePersona'])->name('dashboard.ai-settings.update_persona');
+    Route::get('/dashboard/settings/model', [ProjectSettingsController::class, 'modelProvider'])->name('dashboard.settings.model');
+    Route::get('/dashboard/settings/trigger', [ProjectSettingsController::class, 'trigger'])->name('dashboard.settings.trigger');
+    Route::get('/dashboard/settings/strategy', [ProjectSettingsController::class, 'agentStrategy'])->name('dashboard.settings.strategy');
+    Route::put('/dashboard/settings/llm', [ProjectSettingsController::class, 'updateLlm'])->name('dashboard.settings.update_llm');
+    Route::put('/dashboard/settings/persona', [ProjectSettingsController::class, 'updatePersona'])->name('dashboard.settings.update_persona');
 });
 
 Route::middleware('auth')->group(function () {

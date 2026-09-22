@@ -151,11 +151,8 @@ export default function AuthenticatedLayout({ header, children }) {
                         <NavItem href={route('dashboard.playground')} active={route().current('dashboard.playground')} icon={MessageSquare}>
                             AI Playground
                         </NavItem>
-                        <NavItem href={route('dashboard.integrations')} active={route().current('dashboard.integrations')} icon={Blocks}>
-                            Integrations
-                        </NavItem>
-                        <NavItem href={route('dashboard.ai-settings')} active={route().current('dashboard.ai-settings')} icon={Settings2}>
-                            AI Settings
+                        <NavItem href={route('dashboard.settings.model')} active={route().current('dashboard.settings.*')} icon={Settings2}>
+                            Project Settings
                         </NavItem>
                     </nav>
                 </div>
