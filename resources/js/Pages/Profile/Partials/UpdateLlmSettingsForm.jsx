@@ -8,7 +8,7 @@ import { useForm, usePage } from '@inertiajs/react';
 export default function UpdateLlmSettingsForm({ className = '' }) {
     const { current_project } = usePage().props.auth;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
+    const { data, setData, put, errors, processing, recentlySuccessful } =
         useForm({
             llm_api_key: current_project?.llm_api_key || '',
             llm_provider: current_project?.llm_provider || 'gemini',
@@ -17,7 +17,7 @@ export default function UpdateLlmSettingsForm({ className = '' }) {
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route('dashboard.ai-settings.update_llm'));
+        put(route('dashboard.settings.update_llm'));
     };
 
     return (

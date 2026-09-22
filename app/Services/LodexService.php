@@ -129,8 +129,21 @@ class LodexService
         }
 
         $response = $this->client($user)->post("{$this->baseUrl}/v1/ask", $payload);
+        $result = $response->json();
 
-        return $response->json();
+        // Track token usage globally
+        if ($user && $user->current_project_id) {
+            if (isset($result['prompt_tokens']) || isset($result['completion_tokens'])) {
+                \App\Models\TokenUsage::create([
+                    'project_id' => $user->current_project_id,
+                    'prompt_tokens' => $result['prompt_tokens'] ?? 0,
+                    'completion_tokens' => $result['completion_tokens'] ?? 0,
+                    'endpoint' => '/v1/ask'
+                ]);
+            }
+        }
+
+        return $result;
     }
 
     /**

@@ -8,13 +8,13 @@ import { Bot } from 'lucide-react';
 export default function UpdateAiPersonaForm({ className = '' }) {
     const { current_project } = usePage().props.auth;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+    const { data, setData, put, errors, processing, recentlySuccessful } = useForm({
         system_prompt: current_project?.system_prompt || '',
     });
 
     const submit = (e) => {
         e.preventDefault();
-        patch(route('dashboard.ai-settings.update_persona'), {
+        put(route('dashboard.settings.update_persona'), {
             preserveScroll: true,
         });
     };

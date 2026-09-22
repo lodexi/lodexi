@@ -51,16 +51,6 @@ class LodexPortalController extends Controller
             $request->input('category'),
             auth()->user()
         );
-        
-        // Log Token Usage
-        if (isset($answer['prompt_tokens']) || isset($answer['completion_tokens'])) {
-            TokenUsage::create([
-                'project_id' => auth()->user()->current_project_id,
-                'prompt_tokens' => $answer['prompt_tokens'] ?? 0,
-                'completion_tokens' => $answer['completion_tokens'] ?? 0,
-                'endpoint' => '/v1/ask'
-            ]);
-        }
 
         return response()->json($answer);
     }
