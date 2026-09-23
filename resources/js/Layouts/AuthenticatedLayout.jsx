@@ -9,6 +9,9 @@ export default function AuthenticatedLayout({ header, children }) {
     const [projectDropdownOpen, setProjectDropdownOpen] = useState(false);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     
+    // Determine if we are on a settings page and should collapse the sidebar on desktop
+    const isCollapsed = route().current('dashboard.settings.*');
+    
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
     });
@@ -47,14 +50,17 @@ export default function AuthenticatedLayout({ header, children }) {
     const NavItem = ({ href, active, icon: Icon, children }) => (
         <Link
             href={href}
-            className={`flex items-center px-4 py-3 mb-2 rounded-xl transition-all font-medium ${
+            title={isCollapsed ? children : undefined}
+            className={`flex items-center px-4 py-3 mb-2 rounded-xl transition-all duration-300 ease-in-out font-medium ${
                 active 
                 ? 'bg-[#F29191] text-white shadow-md' 
                 : 'text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-gray-200'
-            }`}
+            } ${isCollapsed ? 'justify-center !px-2' : ''}`}
         >
-            <Icon className={`w-5 h-5 mr-3 ${active ? 'text-white' : 'text-[#F29191]'}`} />
-            {children}
+            <Icon className={`w-5 h-5 shrink-0 transition-all duration-300 ease-in-out ${isCollapsed ? '' : 'mr-3'} ${active ? 'text-white' : 'text-[#F29191]'}`} />
+            <span className={`whitespace-nowrap overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[150px] opacity-100'}`}>
+                {children}
+            </span>
         </Link>
     );
 
@@ -70,36 +76,41 @@ export default function AuthenticatedLayout({ header, children }) {
             )}
 
             {/* Sidebar */}
-            <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-white/40 dark:bg-slate-900/50 backdrop-blur-xl border-r border-gray-200/50 dark:border-slate-800 flex flex-col transform transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-auto ${
-                sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-            }`}>
-                <div className="h-20 flex items-center px-8 border-b border-gray-200/50 dark:border-slate-800 shrink-0">
+            <aside className={`fixed inset-y-0 left-0 z-50 bg-white/40 dark:bg-slate-900/50 backdrop-blur-xl border-r border-gray-200/50 dark:border-slate-800 flex flex-col transform transition-all duration-300 ease-in-out lg:static lg:translate-x-0 ${
+                sidebarOpen ? 'translate-x-0 w-72' : '-translate-x-full w-72'
+            } ${isCollapsed ? 'lg:w-20' : 'lg:w-72'}`}>
+                
+                {/* Header / Logo */}
+                <div className={`h-20 flex items-center border-b border-gray-200/50 dark:border-slate-800 shrink-0 transition-all duration-300 ease-in-out ${isCollapsed ? 'justify-center px-0' : 'px-8'}`}>
                     <Link href="/">
-                        <ApplicationLogo className="block h-10 w-auto" />
+                        <ApplicationLogo collapsed={isCollapsed} className="h-10" />
                     </Link>
                 </div>
 
                 {/* Workspace Switcher */}
-                <div className="px-4 py-4 border-b border-gray-200/50 dark:border-slate-800 shrink-0" ref={dropdownRef}>
+                <div className={`py-4 border-b border-gray-200/50 dark:border-slate-800 shrink-0 transition-all duration-300 ease-in-out ${isCollapsed ? 'px-2' : 'px-4'}`} ref={dropdownRef}>
                     <div className="relative">
                         <button 
                             onClick={() => setProjectDropdownOpen(!projectDropdownOpen)}
-                            className="w-full flex items-center justify-between px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm hover:border-gray-300 dark:hover:border-slate-600 transition-colors"
+                            title={isCollapsed && current_project ? current_project.name : undefined}
+                            className={`flex items-center bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm hover:border-gray-300 dark:hover:border-slate-600 transition-all duration-300 ease-in-out ${
+                                isCollapsed ? 'w-full justify-center p-2' : 'w-full justify-between px-3 py-2'
+                            }`}
                         >
                             <div className="flex items-center space-x-2 truncate">
                                 <div className="w-6 h-6 rounded bg-gray-100 dark:bg-slate-700 flex items-center justify-center shrink-0">
-                                    <Folder className="w-3.5 h-3.5 text-gray-600 dark:text-gray-300" />
+                                    <Folder className="w-3.5 h-3.5 text-gray-600 dark:text-gray-300 shrink-0" />
                                 </div>
-                                <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 truncate">
+                                <span className={`text-sm font-semibold text-gray-700 dark:text-gray-200 truncate transition-all duration-300 ease-in-out ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[200px] opacity-100'}`}>
                                     {current_project ? current_project.name : 'Loading...'}
                                 </span>
                             </div>
-                            <ChevronDown className="w-4 h-4 text-gray-500 shrink-0" />
+                            <ChevronDown className={`w-4 h-4 text-gray-500 shrink-0 transition-all duration-300 ease-in-out overflow-hidden ${isCollapsed ? 'max-w-0 opacity-0 ml-0' : 'max-w-[16px] opacity-100 ml-2'}`} />
                         </button>
 
                         {/* Dropdown Menu */}
                         {projectDropdownOpen && (
-                            <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg py-1 z-50">
+                            <div className={`absolute top-full mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg py-1 z-50 ${isCollapsed ? 'left-14 w-64' : 'left-0 right-0'}`}>
                                 <div className="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                     Your AI Projects
                                 </div>
@@ -140,7 +151,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </div>
 
-                <div className="flex-1 overflow-y-auto py-6 px-4">
+                <div className={`flex-1 overflow-y-auto py-6 transition-all duration-300 ease-in-out ${isCollapsed ? 'px-2' : 'px-4'}`}>
                     <nav className="space-y-1">
                         <NavItem href={route('dashboard')} active={route().current('dashboard')} icon={Home}>
                             Home
@@ -157,23 +168,29 @@ export default function AuthenticatedLayout({ header, children }) {
                     </nav>
                 </div>
 
-                <div className="p-4 border-t border-gray-200/50 dark:border-slate-800">
-                    <div className="bg-white/50 dark:bg-slate-800/50 rounded-2xl p-4">
-                        <div className="flex items-center mb-4">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#F29191] to-orange-300 flex items-center justify-center text-white font-bold text-lg shadow-sm">
+                <div className={`border-t border-gray-200/50 dark:border-slate-800 transition-all duration-300 ease-in-out ${isCollapsed ? 'p-2' : 'p-4'}`}>
+                    <div className={`bg-white/50 dark:bg-slate-800/50 rounded-2xl transition-all duration-300 ease-in-out ${isCollapsed ? 'p-2 flex flex-col items-center space-y-2' : 'p-4'}`}>
+                        <div className={`flex items-center transition-all duration-300 ease-in-out ${isCollapsed ? 'justify-center' : 'mb-4'}`}>
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#F29191] to-orange-300 flex items-center justify-center text-white font-bold text-lg shadow-sm shrink-0" title={user.name}>
                                 {user.name.charAt(0)}
                             </div>
-                            <div className="ml-3 overflow-hidden">
+                            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'max-w-0 opacity-0 ml-0' : 'max-w-[150px] opacity-100 ml-3'}`}>
                                 <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{user.name}</p>
                                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
                             </div>
                         </div>
-                        <div className="space-y-1">
-                            <Link href={route('profile.edit')} className="flex items-center w-full px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-slate-700 rounded-lg transition-colors">
-                                <User className="w-4 h-4 mr-2" /> Profile Settings
+                        <div className={`transition-all duration-300 ease-in-out ${isCollapsed ? 'space-y-2 w-full' : 'space-y-1'}`}>
+                            <Link href={route('profile.edit')} title={isCollapsed ? "Profile Settings" : undefined} className={`flex items-center w-full text-sm text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-slate-700 rounded-lg transition-all duration-300 ease-in-out ${isCollapsed ? 'justify-center p-2' : 'px-3 py-2'}`}>
+                                <User className={`w-4 h-4 shrink-0 transition-all duration-300 ease-in-out ${isCollapsed ? '' : 'mr-2'}`} /> 
+                                <span className={`whitespace-nowrap overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[150px] opacity-100'}`}>
+                                    Profile Settings
+                                </span>
                             </Link>
-                            <Link href={route('logout')} method="post" as="button" className="flex items-center w-full px-3 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors">
-                                <LogOut className="w-4 h-4 mr-2" /> Log Out
+                            <Link href={route('logout')} method="post" as="button" title={isCollapsed ? "Log Out" : undefined} className={`flex items-center w-full text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-all duration-300 ease-in-out ${isCollapsed ? 'justify-center p-2' : 'px-3 py-2'}`}>
+                                <LogOut className={`w-4 h-4 shrink-0 transition-all duration-300 ease-in-out ${isCollapsed ? '' : 'mr-2'}`} /> 
+                                <span className={`whitespace-nowrap overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'max-w-0 opacity-0' : 'max-w-[150px] opacity-100'}`}>
+                                    Log Out
+                                </span>
                             </Link>
                         </div>
                     </div>
@@ -214,7 +231,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 )}
 
                 {/* Page Content */}
-                <main className="flex-1 overflow-y-auto p-4 sm:p-8">
+                <main className="flex-1 overflow-y-auto p-4 sm:p-8 transition-all duration-300 ease-in-out">
                     {children}
                 </main>
             </div>
