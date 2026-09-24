@@ -1,7 +1,7 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link, usePage, router, useForm } from '@inertiajs/react';
 import { useState, useRef, useEffect } from 'react';
-import { Database, Key, MessageSquare, User, LogOut, Menu, X, ChevronDown, Check, Plus, Folder, Blocks, Home, Settings2 } from 'lucide-react';
+import { Database, Key, MessageSquare, User, LogOut, Menu, X, ChevronDown, Check, Plus, Folder, Blocks, Home, Settings2, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function AuthenticatedLayout({ header, children }) {
     const { user, current_project, projects } = usePage().props.auth;
@@ -10,7 +10,12 @@ export default function AuthenticatedLayout({ header, children }) {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     
     // Determine if we are on a settings page and should collapse the sidebar on desktop
-    const isCollapsed = route().current('dashboard.settings.*');
+    const [isCollapsedState, setIsCollapsedState] = useState(route().current('dashboard.settings.*'));
+    const isCollapsed = isCollapsedState;
+
+    useEffect(() => {
+        setIsCollapsedState(route().current('dashboard.settings.*'));
+    }, [usePage().url]);
     
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
@@ -81,10 +86,18 @@ export default function AuthenticatedLayout({ header, children }) {
             } ${isCollapsed ? 'lg:w-20' : 'lg:w-72'}`}>
                 
                 {/* Header / Logo */}
-                <div className={`h-20 flex items-center border-b border-gray-200/50 dark:border-slate-800 shrink-0 transition-all duration-300 ease-in-out ${isCollapsed ? 'justify-center px-0' : 'px-8'}`}>
+                <div className={`relative h-20 flex items-center border-b border-gray-200/50 dark:border-slate-800 shrink-0 transition-all duration-300 ease-in-out ${isCollapsed ? 'justify-center px-0' : 'px-8'}`}>
                     <Link href="/">
                         <ApplicationLogo collapsed={isCollapsed} className="h-10" />
                     </Link>
+
+                    {/* Desktop Toggle Button */}
+                    <button 
+                        onClick={() => setIsCollapsedState(!isCollapsedState)}
+                        className="hidden lg:flex absolute -right-3.5 top-6 w-7 h-7 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full items-center justify-center text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:shadow-md transition-all z-50"
+                    >
+                        {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+                    </button>
                 </div>
 
                 {/* Workspace Switcher */}
