@@ -40,6 +40,26 @@ class ProjectSettingsController extends Controller
     }
 
     /**
+     * Display the API Keys settings page.
+     */
+    public function apiKeys(Request $request): Response
+    {
+        $tokens = $request->user()->currentProject->tokens()->orderBy('created_at', 'desc')->get()->map(function ($token) {
+            return [
+                'id' => $token->id,
+                'name' => $token->name,
+                'last_used_at' => $token->last_used_at ? $token->last_used_at->diffForHumans() : 'Never',
+                'created_at' => $token->created_at->format('M j, Y'),
+            ];
+        });
+
+        return Inertia::render('Dashboard/Settings/ApiKeys', [
+            'tokens' => $tokens,
+            'new_token' => session('new_token'),
+        ]);
+    }
+
+    /**
      * Display the Trigger settings page (Webhooks).
      */
     public function trigger(Request $request): Response
