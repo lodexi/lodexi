@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Link, usePage } from '@inertiajs/react';
-import { Cpu, Wrench, Database, Zap, BrainCircuit, Blocks, Webhook } from 'lucide-react';
+import { Cpu, Wrench, Database, Zap, BrainCircuit, Blocks, Webhook, Key } from 'lucide-react';
 
 export default function SettingsLayout({ children, header }) {
     const { url } = usePage();
@@ -13,6 +13,13 @@ export default function SettingsLayout({ children, header }) {
             href: route('dashboard.settings.model'),
             icon: Cpu,
             active: currentPath.startsWith('/dashboard/settings/model'),
+            comingSoon: false
+        },
+        {
+            name: 'API Keys',
+            href: route('dashboard.settings.apikeys'),
+            icon: Key,
+            active: currentPath.startsWith('/dashboard/settings/apikeys'),
             comingSoon: false
         },
         {

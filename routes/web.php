@@ -49,6 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard.playground');
 
     Route::get('/dashboard/settings/model', [ProjectSettingsController::class, 'modelProvider'])->name('dashboard.settings.model');
+    Route::get('/dashboard/settings/apikeys', [ProjectSettingsController::class, 'apiKeys'])->name('dashboard.settings.apikeys');
     Route::get('/dashboard/settings/trigger', [ProjectSettingsController::class, 'trigger'])->name('dashboard.settings.trigger');
     Route::get('/dashboard/settings/strategy', [ProjectSettingsController::class, 'agentStrategy'])->name('dashboard.settings.strategy');
     Route::put('/dashboard/settings/llm', [ProjectSettingsController::class, 'updateLlm'])->name('dashboard.settings.update_llm');
