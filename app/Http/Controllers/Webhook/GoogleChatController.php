@@ -47,17 +47,9 @@ class GoogleChatController extends Controller
             }
 
             try {
-                // Call LodexService
-                $user = $project->user;
-                
-                // Temporarily override current_project_id to ensure it queries this tenant
-                $originalProjectId = $user->current_project_id;
-                $user->current_project_id = $project->id;
-                
+                // Call Unified LodexService directly with the resolved Project (Tenant)
                 $lodexService = app(LodexService::class);
-                $response = $lodexService->ask($messageText, 4, null, $user);
-                
-                $user->current_project_id = $originalProjectId;
+                $response = $lodexService->ask($messageText, 4, null, $project);
 
                 $answer = $response['answer'] ?? 'Sorry, I could not process your request.';
                 

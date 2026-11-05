@@ -34,6 +34,11 @@ class Project extends Model
         return $this->hasMany(Document::class);
     }
 
+    public function chunks()
+    {
+        return $this->hasMany(DocumentChunk::class);
+    }
+
     public function tokenUsages()
     {
         return $this->hasMany(TokenUsage::class);
