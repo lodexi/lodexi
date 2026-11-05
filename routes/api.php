@@ -16,4 +16,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/v1/search', [LodexPortalController::class, 'search'])->name('api.search');
     Route::post('/v1/ask', [LodexPortalController::class, 'ask'])->name('api.ask');
     Route::post('/v1/ingest', [LodexPortalController::class, 'ingest'])->name('api.ingest');
+    Route::post('/v1/documents', [LodexPortalController::class, 'ingest'])->name('api.documents.ingest');
+    Route::post('/v1/documents/upload', [LodexPortalController::class, 'ingest'])->name('api.documents.upload');
+    Route::delete('/v1/documents/{id}', [LodexPortalController::class, 'destroy'])->name('api.documents.destroy');
 });
