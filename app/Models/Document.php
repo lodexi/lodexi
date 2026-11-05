@@ -21,4 +21,9 @@ class Document extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+    public function chunks()
+    {
+        return $this->hasMany(DocumentChunk::class);
+    }
 }

@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block direct access to sensitive files (.env, composer.json, etc.)
+    RewriteRule ^(\.env|composer\.json|composer\.lock|package\.json|phpunit\.xml|artisan) - [F,L,NC]
+
+    # Route all requests to the Laravel public/ directory automatically (Hostinger File Manager friendly)
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L,QSA]
+</IfModule>
+
